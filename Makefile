@@ -27,4 +27,5 @@ lint:
 release:
 	@echo "Releasing $(GIT_VERSION)"
 	docker build -t db-backup . --build-arg VERSION=$(GIT_VERSION)
-	docker tag kaas-cluster:latest db-backup:$(GIT_VERSION)
+	docker tag db-backup:latest omegion/go-db-backup:$(GIT_VERSION)
+	docker push omegion/go-db-backup:$(GIT_VERSION)
