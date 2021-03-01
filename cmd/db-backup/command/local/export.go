@@ -1,13 +1,12 @@
-package dump
+package local
 
 import (
 	db "github.com/omegion/go-db-backup/pkg/database"
-	"github.com/omegion/go-db-backup/pkg/store"
 	"github.com/spf13/cobra"
 	"log"
 )
 
-func setupDumpCommand(cmd *cobra.Command) {
+func SetupExportCommand(cmd *cobra.Command) {
 	cmd.Flags().String("type", "postgres", "Database type")
 	cmd.Flags().String("host", "", "Host")
 	if err := cmd.MarkFlagRequired("host"); err != nil {
@@ -35,7 +34,7 @@ func setupDumpCommand(cmd *cobra.Command) {
 	}
 }
 
-func getDatabaseByType(options db.Options) (db.Database, error) {
+func GetDatabaseByType(options db.Options) (db.Database, error) {
 	if options.Type == "postgres" {
 		return &db.Postgres{
 			Host:     options.Host,
@@ -50,10 +49,10 @@ func getDatabaseByType(options db.Options) (db.Database, error) {
 	}
 }
 
-func Local() *cobra.Command {
+func Export() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "local",
-		Short: "Print the version/build number",
+		Use:   "export",
+		Short: "Export database table to local",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			dbType, _ := cmd.Flags().GetString("type")
 			host, _ := cmd.Flags().GetString("host")
@@ -69,22 +68,14 @@ func Local() *cobra.Command {
 				Name:     databaseName,
 				Username: username,
 				Password: password,
-				Options:  []string{"--no-owner"},
 			}
 
-			database, err := getDatabaseByType(options)
+			database, err := GetDatabaseByType(options)
 			if err != nil {
 				return err
 			}
 
-			result, err := database.Export()
-			if err != nil {
-				return err
-			}
-
-			export := store.Local{}
-
-			err = result.To(&export)
+			_, err = database.Export()
 			if err != nil {
 				return err
 			}
@@ -93,7 +84,7 @@ func Local() *cobra.Command {
 		},
 	}
 
-	setupDumpCommand(cmd)
+	SetupExportCommand(cmd)
 
 	return cmd
 }

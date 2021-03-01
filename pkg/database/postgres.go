@@ -2,14 +2,14 @@ package database
 
 import (
 	"fmt"
-	"github.com/omegion/go-db-backup/pkg/exporter"
 	"os"
 	"os/exec"
 	"time"
 )
 
-var (
-	PGDumpCmd = "pg_dump"
+const (
+	PGDumpCmd   = "pg_dump"
+	PGImportCmd = "psql"
 )
 
 type Postgres struct {
@@ -28,28 +28,48 @@ type Postgres struct {
 	Options []string
 }
 
-// Export produces a `pg_dump` of the specified database, and creates a gzip compressed tarball archive.
-func (db Postgres) Export() (*exporter.ExportResult, error) {
-	result := &exporter.ExportResult{
-		MIME:         "application/db-tar",
-		DatabaseName: db.Name,
+func (db Postgres) Export() (*Backup, error) {
+	backup := &Backup{
+		Name: db.Name,
+		Host: db.Host,
 	}
 
 	t := time.Now()
 
-	result.Path = fmt.Sprintf(`%v_%v.sql.tar.gz`, db.Name, t.Format(time.RFC3339))
+	backup.Path = fmt.Sprintf(`%v.sql.tar.gz`, t.Format(time.RFC3339))
 
-	options := append(db.dumpOptions(), "-Fc", fmt.Sprintf(`-f%v`, result.Path))
+	options := append(db.dumpOptions(), fmt.Sprintf(`-f%v`, backup.Filename()))
 
 	out, err := exec.Command(PGDumpCmd, options...).Output()
 	if err != nil {
-		return &exporter.ExportResult{}, PostgresError{
+		return &Backup{}, PostgresError{
 			Origin:  err,
 			Message: string(out),
 		}
 	}
 
-	return result, nil
+	return backup, nil
+}
+
+func (db Postgres) Import(file string) (*Backup, error) {
+	backup := &Backup{
+		Name: db.Name,
+		Path: file,
+	}
+
+	options := append(db.dumpOptions(), fmt.Sprintf(`-f%v`, backup.Filename()))
+
+	_, err := exec.Command(PGImportCmd, options...).Output()
+	if err != nil {
+		if exitError, ok := err.(*exec.ExitError); ok {
+			return &Backup{}, PostgresError{
+				Origin:  err,
+				Message: string(exitError.Stderr),
+			}
+		}
+	}
+
+	return backup, nil
 }
 
 func (db Postgres) dumpOptions() []string {

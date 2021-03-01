@@ -1,9 +1,8 @@
 package database
 
-import "github.com/omegion/go-db-backup/pkg/exporter"
-
 type Database interface {
-	Export() (*exporter.ExportResult, error)
+	Export() (*Backup, error)
+	Import(file string) (*Backup, error)
 }
 
 type Options struct {

@@ -2,7 +2,8 @@ package main
 
 import (
 	"github.com/omegion/go-db-backup/cmd/db-backup/command"
-	"github.com/omegion/go-db-backup/cmd/db-backup/command/dump"
+	"github.com/omegion/go-db-backup/cmd/db-backup/command/local"
+	"github.com/omegion/go-db-backup/cmd/db-backup/command/s3"
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +16,8 @@ func RootCommand() *cobra.Command {
 	}
 
 	cmd.AddCommand(command.Version())
-	cmd.AddCommand(dump.Dump())
+	cmd.AddCommand(s3.Main())
+	cmd.AddCommand(local.Main())
 
 	return cmd
 }
