@@ -12,7 +12,6 @@ build:
 build-for-container:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -a -installsuffix cgo -o dist/db-backup-linux cmd/db-backup/main.go
 
-
 .PHONY: lint
 lint:
 	@echo "Checking code style"
