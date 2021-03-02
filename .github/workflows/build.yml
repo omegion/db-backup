@@ -28,7 +28,7 @@ jobs:
         with:
           context: ./
           file: ./Dockerfile
-          push: false
+          push: true
           tags: omegion/go-db-backup:${{ steps.get_version.outputs.VERSION }}
 
       #      - name: Push to GitHub Packages
