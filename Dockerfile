@@ -23,6 +23,6 @@ RUN apk update && \
   rm -rf /var/cache/apk/* && \
   rm -rf /var/tmp/*
 
-COPY --from=builder /app/dist/db-backup /bin/
+COPY --from=builder /app/dist/db-backup-linux /bin/
 
 ENTRYPOINT ["db-backup"]
