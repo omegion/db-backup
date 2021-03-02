@@ -31,6 +31,22 @@ jobs:
           push: true
           tags: omegion/go-db-backup:${{ steps.get_version.outputs.VERSION }}
 
+      - name: Login to GitHub
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push to GitHub
+        id: github_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile
+          push: true
+          tags: omegion/go-db-backup:${{ steps.get_version.outputs.VERSION }}
+
       - name: Build Changelog
         id: github_release
         uses: mikepenz/release-changelog-builder-action@main
