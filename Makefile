@@ -23,6 +23,12 @@ lint:
 	@golangci-lint --version
 	golangci-lint run
 
+.PHONY: cut-tag
+cut-tag:
+	@echo "Cutting $(version)"
+	git tag $(version)
+	git push origin $(version)
+
 .PHONY: release
 release:
 	@echo "Releasing $(GIT_VERSION)"

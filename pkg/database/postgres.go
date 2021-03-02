@@ -40,11 +40,13 @@ func (db Postgres) Export() (*Backup, error) {
 
 	options := append(db.dumpOptions(), fmt.Sprintf(`-f%v`, backup.Filename()))
 
-	out, err := exec.Command(PGDumpCmd, options...).Output()
+	_, err := exec.Command(PGDumpCmd, options...).Output()
 	if err != nil {
-		return &Backup{}, PostgresError{
-			Origin:  err,
-			Message: string(out),
+		if exitError, ok := err.(*exec.ExitError); ok {
+			return &Backup{}, PostgresError{
+				Origin:  err,
+				Message: string(exitError.Stderr),
+			}
 		}
 	}
 
