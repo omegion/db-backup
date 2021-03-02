@@ -24,8 +24,8 @@ jobs:
         with:
           context: ./
           file: ./Dockerfile
-          push: true
-          tags: omegion/go-db-backup:test
+          push: false
+          tags: omegion/go-db-backup:${{ github.event.ref }}
 
       #      - name: Push to GitHub Packages
       #        uses: docker/build-push-action@v1
