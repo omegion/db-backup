@@ -30,7 +30,7 @@ cut-tag:
 	git push origin $(version)
 
 .PHONY: release
-release:
+release: build-for-container
 	@echo "Releasing $(GIT_VERSION)"
 	docker build -t db-backup . --build-arg VERSION=$(GIT_VERSION)
 	docker tag db-backup:latest omegion/go-db-backup:$(GIT_VERSION)

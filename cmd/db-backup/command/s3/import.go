@@ -1,11 +1,13 @@
 package s3
 
 import (
+	"fmt"
 	"github.com/omegion/go-db-backup/cmd/db-backup/command/local"
 	db "github.com/omegion/go-db-backup/pkg/database"
 	"github.com/omegion/go-db-backup/pkg/storage"
 	"github.com/spf13/cobra"
 	"log"
+	"strings"
 )
 
 func setupImportCommand(cmd *cobra.Command) {
@@ -24,43 +26,47 @@ func Import() *cobra.Command {
 			path, _ := cmd.Flags().GetString("path")
 			host, _ := cmd.Flags().GetString("host")
 			port, _ := cmd.Flags().GetString("port")
-			databaseName, _ := cmd.Flags().GetString("database")
+			databases, _ := cmd.Flags().GetString("databases")
 			username, _ := cmd.Flags().GetString("username")
 			password, _ := cmd.Flags().GetString("password")
 			bucketName, _ := cmd.Flags().GetString("bucket")
 			endpointURL, _ := cmd.Flags().GetString("endpoint")
 
-			options := db.Options{
-				Type:     dbType,
-				Host:     host,
-				Port:     port,
-				Name:     databaseName,
-				Username: username,
-				Password: password,
-			}
+			for _, databaseName := range strings.Split(databases, ",") {
+				options := db.Options{
+					Type:     dbType,
+					Host:     host,
+					Port:     port,
+					Name:     databaseName,
+					Username: username,
+					Password: password,
+				}
 
-			database, err := local.GetDatabaseByType(options)
-			if err != nil {
-				return err
-			}
+				database, err := local.GetDatabaseByType(options)
+				if err != nil {
+					return err
+				}
 
-			backup := db.Backup{
-				Name: databaseName,
-				Path: path,
-				Host: host,
-			}
+				backup := db.Backup{
+					Name: databaseName,
+					Path: path,
+					Host: host,
+				}
 
-			err = backup.Get(&storage.S3{
-				Bucket:      bucketName,
-				EndpointURL: endpointURL,
-			})
-			if err != nil {
-				return err
-			}
+				err = backup.Get(&storage.S3{
+					Bucket:      bucketName,
+					EndpointURL: endpointURL,
+				})
+				if err != nil {
+					return err
+				}
 
-			_, err = database.Import(backup.Path)
-			if err != nil {
-				return err
+				_, err = database.Import(backup.Path)
+				if err != nil {
+					return err
+				}
+
+				fmt.Print(fmt.Sprintf("Database %s imported successfully.\n", databaseName))
 			}
 
 			return nil

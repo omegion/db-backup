@@ -6,14 +6,13 @@ import (
 )
 
 func TestVersionCommand(t *testing.T) {
-	_, err := executeCommand(local.Import(),
+	_, err := executeCommand(local.Export(),
 		"--type=postgres",
-		"--file=2021-03-01T20:57:05+01:00.sql.tar.gz",
-		"--database=vault1",
-		"--host=db.omegion.dev",
-		"--password=p6tNYH*4UmrWCP&C9rB#5RdM",
-		"--port=2052",
-		"--username=omegion",
+		"--databases=test",
+		"--host=example.com",
+		"--password=X",
+		"--port=1234",
+		"--username=test",
 	)
 
 	if err != nil {

@@ -1,9 +1,11 @@
 package local
 
 import (
+	"fmt"
 	db "github.com/omegion/go-db-backup/pkg/database"
 	"github.com/spf13/cobra"
 	"log"
+	"strings"
 )
 
 func SetupExportCommand(cmd *cobra.Command) {
@@ -18,8 +20,8 @@ func SetupExportCommand(cmd *cobra.Command) {
 		log.Fatalf("Lethal damage: %s\n\n", err)
 	}
 
-	cmd.Flags().String("database", "", "Database name")
-	if err := cmd.MarkFlagRequired("database"); err != nil {
+	cmd.Flags().String("databases", "", "Databases name, e.g. foo,boo")
+	if err := cmd.MarkFlagRequired("databases"); err != nil {
 		log.Fatalf("Lethal damage: %s\n\n", err)
 	}
 
@@ -57,27 +59,31 @@ func Export() *cobra.Command {
 			dbType, _ := cmd.Flags().GetString("type")
 			host, _ := cmd.Flags().GetString("host")
 			port, _ := cmd.Flags().GetString("port")
-			databaseName, _ := cmd.Flags().GetString("database")
+			databases, _ := cmd.Flags().GetString("databases")
 			username, _ := cmd.Flags().GetString("username")
 			password, _ := cmd.Flags().GetString("password")
 
-			options := db.Options{
-				Type:     dbType,
-				Host:     host,
-				Port:     port,
-				Name:     databaseName,
-				Username: username,
-				Password: password,
-			}
+			for _, databaseName := range strings.Split(databases, ",") {
+				options := db.Options{
+					Type:     dbType,
+					Host:     host,
+					Port:     port,
+					Name:     databaseName,
+					Username: username,
+					Password: password,
+				}
 
-			database, err := GetDatabaseByType(options)
-			if err != nil {
-				return err
-			}
+				database, err := GetDatabaseByType(options)
+				if err != nil {
+					return err
+				}
 
-			_, err = database.Export()
-			if err != nil {
-				return err
+				_, err = database.Export()
+				if err != nil {
+					return err
+				}
+
+				fmt.Print(fmt.Sprintf("Database %s exported successfully.\n", databaseName))
 			}
 
 			return nil
