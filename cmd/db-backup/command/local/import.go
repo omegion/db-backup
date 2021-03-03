@@ -2,19 +2,23 @@ package local
 
 import (
 	"fmt"
-	db "github.com/omegion/go-db-backup/pkg/database"
-	"github.com/spf13/cobra"
 	"log"
 	"strings"
+
+	db "github.com/omegion/go-db-backup/pkg/database"
+
+	"github.com/spf13/cobra"
 )
 
 func setupImportCommand(cmd *cobra.Command) {
 	cmd.Flags().String("file", "", "Backup file path")
+
 	if err := cmd.MarkFlagRequired("file"); err != nil {
 		log.Fatalf("Lethal damage: %s\n\n", err)
 	}
 }
 
+// Import imports given backups to database.
 func Import() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "import",
@@ -48,7 +52,7 @@ func Import() *cobra.Command {
 					return err
 				}
 
-				fmt.Print(fmt.Sprintf("Database %s imported successfully.\n", databaseName))
+				fmt.Printf("Database %s imported successfully.\n", databaseName)
 			}
 
 			return nil

@@ -8,21 +8,25 @@ import (
 	"github.com/omegion/go-db-backup/cmd/db-backup/command/local"
 	db "github.com/omegion/go-db-backup/pkg/database"
 	"github.com/omegion/go-db-backup/pkg/storage"
+
 	"github.com/spf13/cobra"
 )
 
 func setupExportCommand(cmd *cobra.Command) {
 	cmd.Flags().String("bucket", "", "Bucket name")
+
 	if err := cmd.MarkFlagRequired("bucket"); err != nil {
 		log.Fatalf("Lethal damage: %s\n\n", err)
 	}
 
 	cmd.Flags().String("endpoint", "", "S3 custom endpoint")
+
 	if err := cmd.MarkFlagRequired("endpoint"); err != nil {
 		log.Fatalf("Lethal damage: %s\n\n", err)
 	}
 }
 
+// Export exports given tables from database.
 func Export() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "export",
@@ -65,7 +69,7 @@ func Export() *cobra.Command {
 					return err
 				}
 
-				fmt.Print(fmt.Sprintf("Database %s exported successfully.\n", databaseName))
+				fmt.Printf("Database %s exported successfully.\n", databaseName)
 			}
 
 			return nil

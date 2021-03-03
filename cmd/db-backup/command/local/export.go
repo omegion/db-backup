@@ -2,40 +2,50 @@ package local
 
 import (
 	"fmt"
-	db "github.com/omegion/go-db-backup/pkg/database"
-	"github.com/spf13/cobra"
 	"log"
 	"strings"
+
+	db "github.com/omegion/go-db-backup/pkg/database"
+
+	"github.com/spf13/cobra"
 )
 
+// SetupExportCommand sets default flags.
 func SetupExportCommand(cmd *cobra.Command) {
 	cmd.Flags().String("type", "postgres", "Database type")
+
 	cmd.Flags().String("host", "", "Host")
+
 	if err := cmd.MarkFlagRequired("host"); err != nil {
 		log.Fatalf("Lethal damage: %s\n\n", err)
 	}
 
 	cmd.Flags().String("port", "", "Port")
+
 	if err := cmd.MarkFlagRequired("port"); err != nil {
 		log.Fatalf("Lethal damage: %s\n\n", err)
 	}
 
 	cmd.Flags().String("databases", "", "Databases name, e.g. foo,boo")
+
 	if err := cmd.MarkFlagRequired("databases"); err != nil {
 		log.Fatalf("Lethal damage: %s\n\n", err)
 	}
 
 	cmd.Flags().String("username", "", "Username")
+
 	if err := cmd.MarkFlagRequired("username"); err != nil {
 		log.Fatalf("Lethal damage: %s\n\n", err)
 	}
 
 	cmd.Flags().String("password", "", "Password")
+
 	if err := cmd.MarkFlagRequired("password"); err != nil {
 		log.Fatalf("Lethal damage: %s\n\n", err)
 	}
 }
 
+// GetDatabaseByType gets database by its type.
 func GetDatabaseByType(options db.Options) (db.Database, error) {
 	if options.Type == "postgres" {
 		return &db.Postgres{
@@ -46,11 +56,12 @@ func GetDatabaseByType(options db.Options) (db.Database, error) {
 			Password: options.Password,
 			Options:  options.Options,
 		}, nil
-	} else {
-		return &db.Postgres{}, db.TypeError{Type: options.Type}
 	}
+
+	return &db.Postgres{}, db.TypeError{Type: options.Type}
 }
 
+// Export exports given tables from database.
 func Export() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "export",
@@ -83,7 +94,7 @@ func Export() *cobra.Command {
 					return err
 				}
 
-				fmt.Print(fmt.Sprintf("Database %s exported successfully.\n", databaseName))
+				fmt.Printf("Database %s exported successfully.\n", databaseName)
 			}
 
 			return nil

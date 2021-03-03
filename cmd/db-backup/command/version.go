@@ -2,6 +2,7 @@ package command
 
 import (
 	"fmt"
+
 	"github.com/omegion/go-db-backup/pkg/info"
 
 	"github.com/spf13/cobra"
@@ -13,7 +14,7 @@ func Version() *cobra.Command {
 		Use:   "version",
 		Short: "Print the version/build number",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			fmt.Println(fmt.Sprintf("%s %s\n", info.AppName, info.Version))
+			fmt.Printf("%s %s\n", info.AppName, info.Version)
 
 			return nil
 		},

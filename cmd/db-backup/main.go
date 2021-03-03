@@ -4,6 +4,7 @@ import (
 	"github.com/omegion/go-db-backup/cmd/db-backup/command"
 	"github.com/omegion/go-db-backup/cmd/db-backup/command/local"
 	"github.com/omegion/go-db-backup/cmd/db-backup/command/s3"
+
 	"github.com/spf13/cobra"
 )
 

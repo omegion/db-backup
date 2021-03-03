@@ -2,21 +2,25 @@ package s3
 
 import (
 	"fmt"
+	"log"
+	"strings"
+
 	"github.com/omegion/go-db-backup/cmd/db-backup/command/local"
 	db "github.com/omegion/go-db-backup/pkg/database"
 	"github.com/omegion/go-db-backup/pkg/storage"
+
 	"github.com/spf13/cobra"
-	"log"
-	"strings"
 )
 
 func setupImportCommand(cmd *cobra.Command) {
 	cmd.Flags().String("path", "", "Backup path in S3")
+
 	if err := cmd.MarkFlagRequired("path"); err != nil {
 		log.Fatalf("Lethal damage: %s\n\n", err)
 	}
 }
 
+// Import imports given backups to database.
 func Import() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "import",
@@ -66,7 +70,7 @@ func Import() *cobra.Command {
 					return err
 				}
 
-				fmt.Print(fmt.Sprintf("Database %s imported successfully.\n", databaseName))
+				fmt.Printf("Database %s imported successfully.\n", databaseName)
 			}
 
 			return nil

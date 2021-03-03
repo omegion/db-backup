@@ -8,10 +8,13 @@ import (
 )
 
 const (
-	PGDumpCmd   = "pg_dump"
+	// PGDumpCmd default dump command for Postgres.
+	PGDumpCmd = "pg_dump"
+	// PGImportCmd default import command for Postgres.
 	PGImportCmd = "psql"
 )
 
+// Postgres database.
 type Postgres struct {
 	// Database Host (e.g. 127.0.0.1)
 	Host string
@@ -28,6 +31,7 @@ type Postgres struct {
 	Options []string
 }
 
+// Export returns backup with dumped file.
 func (db Postgres) Export() (*Backup, error) {
 	backup := &Backup{
 		Name: db.Name,
@@ -53,6 +57,7 @@ func (db Postgres) Export() (*Backup, error) {
 	return backup, nil
 }
 
+// Import imports given file to Postgres database.
 func (db Postgres) Import(file string) (*Backup, error) {
 	backup := &Backup{
 		Name: db.Name,

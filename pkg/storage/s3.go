@@ -3,20 +3,24 @@ package storage
 import (
 	"bytes"
 	"fmt"
+	"os"
+	"path/filepath"
+
+	"github.com/omegion/go-db-backup/pkg/database"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
-	"github.com/omegion/go-db-backup/pkg/database"
-	"os"
-	"path/filepath"
 )
 
+// S3 database backup storage.
 type S3 struct {
 	Bucket      string
 	EndpointURL string
 }
 
+// Get returns backup with downloaded backup from S3.
 func (s *S3) Get(backup database.Backup) error {
 	config := aws.Config{}
 
@@ -32,7 +36,7 @@ func (s *S3) Get(backup database.Backup) error {
 
 	file, err := os.Create(filepath.Join(backup.Filename()))
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to get backup file: %w", err)
 	}
 
 	defer file.Close()
@@ -44,12 +48,13 @@ func (s *S3) Get(backup database.Backup) error {
 		},
 	)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to download backup file: %w", err)
 	}
 
 	return nil
 }
 
+// Save saves database backup to S3.
 func (s *S3) Save(backup database.Backup) error {
 	file, err := os.Open(backup.Path)
 	if err != nil {
@@ -67,7 +72,10 @@ func (s *S3) Save(backup database.Backup) error {
 
 	buffer := make([]byte, stat.Size())
 
-	file.Read(buffer)
+	_, err = file.Read(buffer)
+	if err != nil {
+		return err
+	}
 
 	config := aws.Config{}
 
@@ -92,9 +100,13 @@ func (s *S3) Save(backup database.Backup) error {
 		return err
 	}
 
-	fmt.Println(fmt.Sprintf("Dump is successful for %s", backup.Name))
+	fmt.Printf("Dump is successful for %s\n", backup.Name)
 
 	return nil
 }
+
+// Delete removes backup from S3.
 func (s *S3) Delete(backup database.Backup) error { return nil }
-func (s *S3) List()                               {}
+
+// List lists backups from S3.
+func (s *S3) List() {}
