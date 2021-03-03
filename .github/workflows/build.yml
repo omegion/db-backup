@@ -45,7 +45,7 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: omegion/go-db-backup:${{ steps.get_version.outputs.VERSION }}
+          tags: ghcr.io/omegion/go-db-backup:${{ steps.get_version.outputs.VERSION }}
 
       - name: Build Changelog
         id: github_release
