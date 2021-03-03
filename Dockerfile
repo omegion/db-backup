@@ -1,9 +1,9 @@
 ARG GO_VERSION=1.15-alpine3.12
 ARG FROM_IMAGE=alpine:3.11
 
-LABEL org.opencontainers.image.source="https://github.com/omegion/do-db-backup"
-
 FROM golang:${GO_VERSION} AS builder
+
+LABEL org.opencontainers.image.source="https://github.com/omegion/do-db-backup"
 
 RUN apk update && \
   apk add ca-certificates gettext git make && \
