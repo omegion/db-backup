@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"github.com/omegion/go-command"
+	"github.com/omegion/go-db-backup/pkg/backup"
 	"os"
 	"os/exec"
 	"time"
@@ -34,55 +35,45 @@ func (db *Postgres) SetCommander(commander command.Interface) {
 }
 
 // Export returns backup with dumped file.
-func (db Postgres) Export() (*Backup, error) {
-	backup := &Backup{
-		Name: db.Name,
-		Host: db.Host,
-	}
+func (db Postgres) Export(backup *backup.Backup) error {
 
-	t := time.Now()
-
-	backup.Path = fmt.Sprintf(`%v.sql.tar.gz`, t.Format(time.RFC3339))
+	backup.CreatedAt = time.Now()
+	backup.Path = fmt.Sprintf(`%v.sql.tar.gz`, backup.CreatedAt.Format(time.RFC3339))
 
 	options := append(db.dumpOptions(), fmt.Sprintf(`-f%v`, backup.Filename()))
 
 	_, err := db.Commander.Output(PGDumpCmd, options...)
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
-			return &Backup{}, PostgresError{
+			return PostgresError{
 				Origin:  err,
 				Message: string(exitError.Stderr),
 			}
 		}
 
-		return backup, err
+		return err
 	}
 
-	return backup, nil
+	return nil
 }
 
 // Import imports given file to Postgres database.
-func (db Postgres) Import(file string) (*Backup, error) {
-	backup := &Backup{
-		Name: db.Name,
-		Path: file,
-	}
-
+func (db Postgres) Import(backup *backup.Backup) error {
 	options := append(db.dumpOptions(), fmt.Sprintf(`-f%v`, backup.Filename()))
 
 	_, err := db.Commander.Output(PGImportCmd, options...)
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
-			return &Backup{}, PostgresError{
+			return PostgresError{
 				Origin:  err,
 				Message: string(exitError.Stderr),
 			}
 		}
 
-		return backup, err
+		return err
 	}
 
-	return backup, nil
+	return nil
 }
 
 func (db Postgres) dumpOptions() []string {

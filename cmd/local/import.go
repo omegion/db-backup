@@ -2,6 +2,8 @@ package local
 
 import (
 	"fmt"
+	"github.com/omegion/go-command"
+	"github.com/omegion/go-db-backup/pkg/backup"
 	"log"
 	"strings"
 
@@ -32,6 +34,8 @@ func Import() *cobra.Command {
 			username, _ := cmd.Flags().GetString("username")
 			password, _ := cmd.Flags().GetString("password")
 
+			commander := command.Command{}
+
 			for _, databaseName := range strings.Split(databases, ",") {
 				options := db.Options{
 					Type:     dbType,
@@ -47,7 +51,17 @@ func Import() *cobra.Command {
 					return err
 				}
 
-				_, err = database.Import(file)
+				database.SetCommander(commander)
+
+				backupOptions := backup.Options{
+					Name: databaseName,
+					Host: host,
+					Path: file,
+				}
+
+				b := backup.New(backupOptions)
+
+				err = database.Import(&b)
 				if err != nil {
 					return err
 				}

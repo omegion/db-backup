@@ -1,14 +1,16 @@
 package database
 
 import (
+	"github.com/omegion/go-db-backup/pkg/backup"
+
 	"github.com/omegion/go-command"
 )
 
 // Database interface for different databases.
 type Database interface {
 	SetCommander(command.Interface)
-	Export() (*Backup, error)
-	Import(file string) (*Backup, error)
+	Export(*backup.Backup) error
+	Import(*backup.Backup) error
 }
 
 // Options for different Database.

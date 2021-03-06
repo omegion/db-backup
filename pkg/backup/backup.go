@@ -1,20 +1,39 @@
-package database
+package backup
 
-import "path/filepath"
+import (
+	"path/filepath"
+	"time"
+)
 
 // Storage interface of different storages.
 type Storage interface {
-	Save(backup Backup) error
-	Delete(backup Backup) error
-	Get(backup Backup) error
-	List() // list backup files for given Host and Database
+	Save(Backup) error
+	Delete(Backup) error
+	Get(Backup) error
+	List(Backup) ([]Backup, error)
+}
+
+// Options options for Backup.
+type Options struct {
+	Name string
+	Path string
+	Host string
 }
 
 // Backup for database.
 type Backup struct {
-	Name string
-	Path string
-	Host string
+	Name      string
+	Path      string
+	Host      string
+	CreatedAt time.Time
+}
+
+func New(options Options) Backup {
+	return Backup{
+		Name:      options.Name,
+		Host:      options.Host,
+		CreatedAt: time.Time{},
+	}
 }
 
 // Save backup to given storage.

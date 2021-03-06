@@ -2,6 +2,7 @@ package local
 
 import (
 	"fmt"
+	"github.com/omegion/go-db-backup/pkg/backup"
 	"log"
 	"strings"
 
@@ -94,7 +95,14 @@ func Export() *cobra.Command {
 
 				database.SetCommander(commander)
 
-				_, err = database.Export()
+				backupOptions := backup.Options{
+					Name: databaseName,
+					Host: host,
+				}
+
+				b := backup.New(backupOptions)
+
+				err = database.Export(&b)
 				if err != nil {
 					return err
 				}

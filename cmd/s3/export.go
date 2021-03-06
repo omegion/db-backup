@@ -2,6 +2,8 @@ package s3
 
 import (
 	"fmt"
+	"github.com/omegion/go-command"
+	"github.com/omegion/go-db-backup/pkg/backup"
 	"log"
 	"strings"
 
@@ -41,6 +43,8 @@ func Export() *cobra.Command {
 			bucketName, _ := cmd.Flags().GetString("bucket")
 			endpointURL, _ := cmd.Flags().GetString("endpoint")
 
+			commander := command.Command{}
+
 			for _, databaseName := range strings.Split(databases, ",") {
 				options := db.Options{
 					Type:     dbType,
@@ -56,12 +60,21 @@ func Export() *cobra.Command {
 					return err
 				}
 
-				backup, err := database.Export()
+				database.SetCommander(commander)
+
+				backupOptions := backup.Options{
+					Name: databaseName,
+					Host: host,
+				}
+
+				b := backup.New(backupOptions)
+
+				err = database.Export(&b)
 				if err != nil {
 					return err
 				}
 
-				err = backup.Save(&storage.S3{
+				err = b.Save(&storage.S3{
 					Bucket:      bucketName,
 					EndpointURL: endpointURL,
 				})

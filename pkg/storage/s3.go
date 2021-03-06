@@ -3,10 +3,9 @@ package storage
 import (
 	"bytes"
 	"fmt"
+	"github.com/omegion/go-db-backup/pkg/backup"
 	"os"
 	"path/filepath"
-
-	"github.com/omegion/go-db-backup/pkg/database"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -21,7 +20,7 @@ type S3 struct {
 }
 
 // Get returns backup with downloaded backup from S3.
-func (s *S3) Get(backup database.Backup) error {
+func (s *S3) Get(backup backup.Backup) error {
 	config := aws.Config{}
 
 	if s.EndpointURL != "" {
@@ -55,15 +54,13 @@ func (s *S3) Get(backup database.Backup) error {
 }
 
 // Save saves database backup to S3.
-func (s *S3) Save(backup database.Backup) error {
+func (s *S3) Save(backup backup.Backup) error {
 	file, err := os.Open(backup.Path)
 	if err != nil {
 		return err
 	}
 
-	defer func() {
-		os.Remove(file.Name())
-	}()
+	defer os.Remove(file.Name())
 
 	stat, err := file.Stat()
 	if err != nil {
@@ -106,7 +103,40 @@ func (s *S3) Save(backup database.Backup) error {
 }
 
 // Delete removes backup from S3.
-func (s *S3) Delete(backup database.Backup) error { return nil }
+func (s *S3) Delete(backup backup.Backup) error { return nil }
 
 // List lists backups from S3.
-func (s *S3) List() {}
+func (s *S3) List(b backup.Backup) ([]backup.Backup, error) {
+	config := aws.Config{}
+
+	if s.EndpointURL != "" {
+		config.Endpoint = aws.String(s.EndpointURL)
+	}
+
+	sess := session.Must(session.NewSessionWithOptions(session.Options{
+		Config: config,
+	}))
+
+	svc := s3.New(sess)
+
+	res, err := svc.ListObjectsV2(&s3.ListObjectsV2Input{
+		Bucket:    aws.String(s.Bucket),
+		Delimiter: nil,
+		Prefix:    aws.String(fmt.Sprintf("%s/%s", b.Host, b.Name)),
+	})
+	if err != nil {
+		return []backup.Backup{}, err
+	}
+
+	var backups []backup.Backup
+
+	for _, object := range res.Contents {
+		backups = append(backups, backup.Backup{
+			Name: b.Name,
+			Path: *object.Key,
+			Host: b.Host,
+		})
+	}
+
+	return backups, nil
+}
