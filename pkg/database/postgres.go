@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"github.com/omegion/go-command"
 	"os"
 	"os/exec"
 	"time"
@@ -16,19 +17,20 @@ const (
 
 // Postgres database.
 type Postgres struct {
-	// Database Host (e.g. 127.0.0.1)
-	Host string
-	// Database Port (e.g. 5432)
-	Port string
-	// Database Name
-	Name string
-	// Connection Username
+	Host     string
+	Port     string
+	Name     string
 	Username string
-	// Connection Password
 	Password string
 	// Extra pg_dump options
 	// e.g []string{"--inserts"}
-	Options []string
+	Options   []string
+	Commander command.Interface
+}
+
+// SetCommander sets commander for Postgres.
+func (db *Postgres) SetCommander(commander command.Interface) {
+	db.Commander = commander
 }
 
 // Export returns backup with dumped file.
@@ -44,7 +46,7 @@ func (db Postgres) Export() (*Backup, error) {
 
 	options := append(db.dumpOptions(), fmt.Sprintf(`-f%v`, backup.Filename()))
 
-	_, err := exec.Command(PGDumpCmd, options...).Output()
+	_, err := db.Commander.Output(PGDumpCmd, options...)
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
 			return &Backup{}, PostgresError{
@@ -52,6 +54,8 @@ func (db Postgres) Export() (*Backup, error) {
 				Message: string(exitError.Stderr),
 			}
 		}
+
+		return backup, err
 	}
 
 	return backup, nil
@@ -66,7 +70,7 @@ func (db Postgres) Import(file string) (*Backup, error) {
 
 	options := append(db.dumpOptions(), fmt.Sprintf(`-f%v`, backup.Filename()))
 
-	_, err := exec.Command(PGImportCmd, options...).Output()
+	_, err := db.Commander.Output(PGImportCmd, options...)
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
 			return &Backup{}, PostgresError{
@@ -74,6 +78,8 @@ func (db Postgres) Import(file string) (*Backup, error) {
 				Message: string(exitError.Stderr),
 			}
 		}
+
+		return backup, err
 	}
 
 	return backup, nil

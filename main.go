@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/omegion/go-db-backup/cmd/db-backup/command"
-	"github.com/omegion/go-db-backup/cmd/db-backup/command/local"
-	"github.com/omegion/go-db-backup/cmd/db-backup/command/s3"
+	cmd2 "github.com/omegion/go-db-backup/cmd"
+	"github.com/omegion/go-db-backup/cmd/local"
+	"github.com/omegion/go-db-backup/cmd/s3"
 
 	"github.com/spf13/cobra"
 )
@@ -16,7 +16,7 @@ func RootCommand() *cobra.Command {
 		Long:  "CLI command to generate configs for Kubernetes as a Cluster",
 	}
 
-	cmd.AddCommand(command.Version())
+	cmd.AddCommand(cmd2.Version())
 	cmd.AddCommand(s3.Main())
 	cmd.AddCommand(local.Main())
 

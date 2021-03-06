@@ -7,6 +7,7 @@ import (
 
 	db "github.com/omegion/go-db-backup/pkg/database"
 
+	"github.com/omegion/go-command"
 	"github.com/spf13/cobra"
 )
 
@@ -74,6 +75,8 @@ func Export() *cobra.Command {
 			username, _ := cmd.Flags().GetString("username")
 			password, _ := cmd.Flags().GetString("password")
 
+			commander := command.Command{}
+
 			for _, databaseName := range strings.Split(databases, ",") {
 				options := db.Options{
 					Type:     dbType,
@@ -88,6 +91,8 @@ func Export() *cobra.Command {
 				if err != nil {
 					return err
 				}
+
+				database.SetCommander(commander)
 
 				_, err = database.Export()
 				if err != nil {

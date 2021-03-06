@@ -5,34 +5,29 @@ import (
 	"log"
 	"strings"
 
-	"github.com/omegion/go-db-backup/cmd/db-backup/command/local"
+	"github.com/omegion/go-db-backup/cmd/local"
 	db "github.com/omegion/go-db-backup/pkg/database"
 	"github.com/omegion/go-db-backup/pkg/storage"
 
 	"github.com/spf13/cobra"
 )
 
-func setupExportCommand(cmd *cobra.Command) {
-	cmd.Flags().String("bucket", "", "Bucket name")
+func setupImportCommand(cmd *cobra.Command) {
+	cmd.Flags().String("path", "", "Backup path in S3")
 
-	if err := cmd.MarkFlagRequired("bucket"); err != nil {
-		log.Fatalf("Lethal damage: %s\n\n", err)
-	}
-
-	cmd.Flags().String("endpoint", "", "S3 custom endpoint")
-
-	if err := cmd.MarkFlagRequired("endpoint"); err != nil {
+	if err := cmd.MarkFlagRequired("path"); err != nil {
 		log.Fatalf("Lethal damage: %s\n\n", err)
 	}
 }
 
-// Export exports given tables from database.
-func Export() *cobra.Command {
+// Import imports given backups to database.
+func Import() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "export",
-		Short: "Export database to S3 bucket.",
+		Use:   "import",
+		Short: "Import database backup from S3 bucket.",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			dbType, _ := cmd.Flags().GetString("type")
+			path, _ := cmd.Flags().GetString("path")
 			host, _ := cmd.Flags().GetString("host")
 			port, _ := cmd.Flags().GetString("port")
 			databases, _ := cmd.Flags().GetString("databases")
@@ -56,12 +51,13 @@ func Export() *cobra.Command {
 					return err
 				}
 
-				backup, err := database.Export()
-				if err != nil {
-					return err
+				backup := db.Backup{
+					Name: databaseName,
+					Path: path,
+					Host: host,
 				}
 
-				err = backup.Save(&storage.S3{
+				err = backup.Get(&storage.S3{
 					Bucket:      bucketName,
 					EndpointURL: endpointURL,
 				})
@@ -69,7 +65,12 @@ func Export() *cobra.Command {
 					return err
 				}
 
-				fmt.Printf("Database %s exported successfully.\n", databaseName)
+				_, err = database.Import(backup.Path)
+				if err != nil {
+					return err
+				}
+
+				fmt.Printf("Database %s imported successfully.\n", databaseName)
 			}
 
 			return nil
@@ -78,6 +79,7 @@ func Export() *cobra.Command {
 
 	local.SetupExportCommand(cmd)
 	setupExportCommand(cmd)
+	setupImportCommand(cmd)
 
 	return cmd
 }
