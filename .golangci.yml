@@ -18,6 +18,8 @@ linters-settings:
     allow-unused: false
     require-explanation: true
     require-specific: false
+  funlen:
+    lines: 80
 
 issues:
   exclude-rules:

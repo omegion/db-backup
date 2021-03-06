@@ -2,15 +2,15 @@ package s3
 
 import (
 	"fmt"
-	"github.com/omegion/go-command"
-	"github.com/omegion/go-db-backup/pkg/backup"
 	"log"
 	"strings"
 
 	"github.com/omegion/go-db-backup/cmd/local"
+	"github.com/omegion/go-db-backup/pkg/backup"
 	db "github.com/omegion/go-db-backup/pkg/database"
 	"github.com/omegion/go-db-backup/pkg/storage"
 
+	"github.com/omegion/go-command"
 	"github.com/spf13/cobra"
 )
 

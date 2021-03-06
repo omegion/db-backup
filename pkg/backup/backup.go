@@ -28,6 +28,7 @@ type Backup struct {
 	CreatedAt time.Time
 }
 
+// New returns backup filled with Options.
 func New(options Options) Backup {
 	return Backup{
 		Name:      options.Name,

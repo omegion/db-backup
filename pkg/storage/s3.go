@@ -3,9 +3,10 @@ package storage
 import (
 	"bytes"
 	"fmt"
-	"github.com/omegion/go-db-backup/pkg/backup"
 	"os"
 	"path/filepath"
+
+	"github.com/omegion/go-db-backup/pkg/backup"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -128,6 +129,7 @@ func (s *S3) List(b backup.Backup) ([]backup.Backup, error) {
 		return []backup.Backup{}, err
 	}
 
+	//nolint:prealloc // this is enough for now.
 	var backups []backup.Backup
 
 	for _, object := range res.Contents {
