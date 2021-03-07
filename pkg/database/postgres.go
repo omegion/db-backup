@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"time"
 
 	"github.com/omegion/go-db-backup/pkg/backup"
 
@@ -38,9 +37,6 @@ func (db *Postgres) SetCommander(commander command.Interface) {
 
 // Export returns backup with dumped file.
 func (db Postgres) Export(backup *backup.Backup) error {
-	backup.CreatedAt = time.Now()
-	backup.Path = fmt.Sprintf(`%v.sql.tar.gz`, backup.CreatedAt.Format(time.RFC3339))
-
 	options := append(db.dumpOptions(), fmt.Sprintf(`-f%v`, backup.Filename()))
 
 	_, err := db.Commander.Output(PGDumpCmd, options...)

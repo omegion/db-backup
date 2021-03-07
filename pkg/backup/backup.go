@@ -1,6 +1,7 @@
 package backup
 
 import (
+	"fmt"
 	"path/filepath"
 	"time"
 )
@@ -30,10 +31,13 @@ type Backup struct {
 
 // New returns backup filled with Options.
 func New(options Options) Backup {
+	now := time.Now()
+
 	return Backup{
 		Name:      options.Name,
 		Host:      options.Host,
-		CreatedAt: time.Time{},
+		CreatedAt: now,
+		Path:      fmt.Sprintf("%v.sql.tar.gz", now.Format(time.RFC3339)),
 	}
 }
 

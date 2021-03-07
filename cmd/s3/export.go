@@ -22,10 +22,6 @@ func setupExportCommand(cmd *cobra.Command) {
 	}
 
 	cmd.Flags().String("endpoint", "", "S3 custom endpoint")
-
-	if err := cmd.MarkFlagRequired("endpoint"); err != nil {
-		log.Fatalf("Lethal damage: %s\n\n", err)
-	}
 }
 
 // Export exports given tables from database.

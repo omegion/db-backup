@@ -90,9 +90,10 @@ func (s *S3) Save(backup backup.Backup) error {
 	path := filepath.Join(backup.Host, backup.Name, backup.Path)
 
 	_, err = svc.PutObject(&s3.PutObjectInput{
-		Bucket: aws.String(s.Bucket),
-		Body:   bytes.NewReader(buffer),
-		Key:    aws.String(path),
+		Bucket:  aws.String(s.Bucket),
+		Body:    bytes.NewReader(buffer),
+		Key:     aws.String(path),
+		Tagging: aws.String("Backup=True"),
 	})
 	if err != nil {
 		return err
