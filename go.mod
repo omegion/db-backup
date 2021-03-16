@@ -1,4 +1,4 @@
-module github.com/omegion/go-db-backup
+module github.com/omegion/db-backup
 
 go 1.16
 

@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/omegion/go-db-backup/pkg/info"
+	"github.com/omegion/db-backup/pkg/info"
 
 	"github.com/spf13/cobra"
 )

@@ -1,6 +1,6 @@
 export PATH := $(abspath ./vendor/bin):$(PATH)
 
-BASE_PACKAGE_NAME  = github.com/omegion/go-db-backup
+BASE_PACKAGE_NAME  = github.com/omegion/db-backup
 GIT_VERSION = $(shell git describe --tags --always 2> /dev/null || echo 0.0.0)
 LDFLAGS            = -ldflags "-X $(BASE_PACKAGE_NAME)/pkg/info.Version=$(GIT_VERSION)"
 BUFFER            := $(shell mktemp)
@@ -43,5 +43,5 @@ cut-tag:
 release: build-for-container
 	@echo "Releasing $(GIT_VERSION)"
 	docker build -t db-backup . --build-arg VERSION=$(GIT_VERSION)
-	docker tag db-backup:latest omegion/go-db-backup:$(GIT_VERSION)
-	docker push omegion/go-db-backup:$(GIT_VERSION)
+	docker tag db-backup:latest omegion/db-backup:$(GIT_VERSION)
+	docker push omegion/db-backup:$(GIT_VERSION)

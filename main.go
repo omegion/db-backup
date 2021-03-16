@@ -1,9 +1,9 @@
 package main
 
 import (
-	cmd2 "github.com/omegion/go-db-backup/cmd"
-	"github.com/omegion/go-db-backup/cmd/local"
-	"github.com/omegion/go-db-backup/cmd/s3"
+	cmd2 "github.com/omegion/db-backup/cmd"
+	"github.com/omegion/db-backup/cmd/local"
+	"github.com/omegion/db-backup/cmd/s3"
 
 	"github.com/spf13/cobra"
 )

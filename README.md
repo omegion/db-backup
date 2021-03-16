@@ -1,11 +1,21 @@
 # Database Backup Tool
 
-[![GithubBuild](https://img.shields.io/github/workflow/status/omegion/go-db-backup/Code%20Check)](http://pkg.go.dev/github.com/omegion/go-db-backup)
-[![Coverage Status](https://coveralls.io/repos/github/omegion/go-db-backup/badge.svg?branch=master)](https://coveralls.io/github/omegion/go-db-backup?branch=master)
-[![Go Report Card](https://goreportcard.com/badge/github.com/omegion/go-db-backup)](https://goreportcard.com/report/github.com/omegion/go-db-backup)
-[![GoDoc](https://img.shields.io/badge/pkg.go.dev-doc-blue)](http://pkg.go.dev/github.com/omegion/go-db-backup)
+[![GithubBuild](https://img.shields.io/github/workflow/status/omegion/db-backup/Code%20Check)](http://pkg.go.dev/github.com/omegion/db-backup)
+[![Coverage Status](https://coveralls.io/repos/github/omegion/db-backup/badge.svg?branch=master)](https://coveralls.io/github/omegion/db-backup?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/omegion/db-backup)](https://goreportcard.com/report/github.com/omegion/db-backup)
+[![GoDoc](https://img.shields.io/badge/pkg.go.dev-doc-blue)](http://pkg.go.dev/github.com/omegion/db-backup)
 
 Dump or Import backups from local or S3 buckets.
+
+## Install Globally
+
+```shell
+go get github.com/omegion/db-backup
+```
+
+```shell
+
+```
 
 ## Custom S3 Endpoint for Scaleway
 

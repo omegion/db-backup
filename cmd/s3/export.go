@@ -5,10 +5,10 @@ import (
 	"log"
 	"strings"
 
-	"github.com/omegion/go-db-backup/cmd/local"
-	"github.com/omegion/go-db-backup/pkg/backup"
-	db "github.com/omegion/go-db-backup/pkg/database"
-	"github.com/omegion/go-db-backup/pkg/storage"
+	"github.com/omegion/db-backup/cmd/local"
+	"github.com/omegion/db-backup/pkg/backup"
+	db "github.com/omegion/db-backup/pkg/database"
+	"github.com/omegion/db-backup/pkg/storage"
 
 	"github.com/omegion/go-command"
 	"github.com/spf13/cobra"

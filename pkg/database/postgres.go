@@ -5,7 +5,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/omegion/go-db-backup/pkg/backup"
+	"github.com/omegion/db-backup/pkg/backup"
 
 	"github.com/omegion/go-command"
 )
