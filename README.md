@@ -14,7 +14,21 @@ go get github.com/omegion/db-backup
 ```
 
 ```shell
+CLI command to generate configs for Kubernetes as a Cluster
 
+Usage:
+  db-backup [command]
+
+Available Commands:
+  help        Help about any command
+  local       dump Management
+  s3          dump Management
+  version     Print the version/build number
+
+Flags:
+  -h, --help   help for db-backup
+
+Use "db-backup [command] --help" for more information about a command.
 ```
 
 ## Custom S3 Endpoint for Scaleway
