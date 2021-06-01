@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/omegion/db-backup/pkg/backup"
+	"github.com/omegion/db-backup/internal/backup"
 
 	"github.com/omegion/go-command"
 )

@@ -5,8 +5,8 @@ import (
 	"log"
 	"strings"
 
-	"github.com/omegion/db-backup/pkg/backup"
-	db "github.com/omegion/db-backup/pkg/database"
+	"github.com/omegion/db-backup/internal/backup"
+	db "github.com/omegion/db-backup/internal/database"
 
 	"github.com/omegion/go-command"
 	"github.com/spf13/cobra"

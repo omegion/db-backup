@@ -14,7 +14,7 @@ go get github.com/omegion/db-backup
 ```
 
 ```shell
-CLI command to generate configs for Kubernetes as a Cluster
+CLI command to create backup for database in local or cloud.
 
 Usage:
   db-backup [command]
@@ -26,7 +26,8 @@ Available Commands:
   version     Print the version/build number
 
 Flags:
-  -h, --help   help for db-backup
+  -h, --help              help for db-backup
+      --logLevel string   Set the logging level. One of: debug|info|warn|error (default "info")
 
 Use "db-backup [command] --help" for more information about a command.
 ```

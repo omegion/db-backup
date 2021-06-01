@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/omegion/db-backup/cmd/local"
-	"github.com/omegion/db-backup/pkg/backup"
-	db "github.com/omegion/db-backup/pkg/database"
-	"github.com/omegion/db-backup/pkg/storage"
+	"github.com/omegion/db-backup/internal/backup"
+	db "github.com/omegion/db-backup/internal/database"
+	"github.com/omegion/db-backup/internal/storage"
 
 	"github.com/omegion/go-command"
 	"github.com/spf13/cobra"

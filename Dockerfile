@@ -1,7 +1,8 @@
-ARG GO_VERSION=1.15-alpine3.12
-ARG FROM_IMAGE=alpine:3.11
+ARG GO_VERSION=1.16-alpine3.12
+ARG FROM_IMAGE=alpine:3.12
 
-FROM golang:${GO_VERSION} AS builder
+FROM --platform=${BUILDPLATFORM} golang:${GO_VERSION} AS builder
+
 
 LABEL org.opencontainers.image.source="https://github.com/omegion/do-db-backup"
 
@@ -15,7 +16,7 @@ COPY ./ /app
 
 WORKDIR /app
 
-RUN make build-for-container
+RUN make build TARGETOS=$TARGETOS TARGETARCH=$TARGETARCH
 
 FROM ${FROM_IMAGE}
 
@@ -25,6 +26,6 @@ RUN apk update && \
   rm -rf /var/cache/apk/* && \
   rm -rf /var/tmp/*
 
-COPY --from=builder /app/dist/db-backup-linux /bin/db-backup
+COPY --from=builder /app/dist/db-backup /bin/db-backup
 
 ENTRYPOINT ["db-backup"]
