@@ -9,6 +9,7 @@ import (
 
 	"github.com/omegion/db-backup/internal"
 	"github.com/omegion/db-backup/internal/backup"
+	"github.com/omegion/db-backup/test"
 )
 
 func TestSetCommander(t *testing.T) {
@@ -35,7 +36,7 @@ func TestExport(t *testing.T) {
 
 	b := backup.Backup{Path: "/var/test/my-bucket-name"}
 
-	expectedCommands := []internal.FakeCommand{
+	expectedCommands := []test.FakeCommand{
 		{
 			Command: fmt.Sprintf(
 				"pg_dump -d%s -h%s -p%s -U%s -f%s",
@@ -48,7 +49,7 @@ func TestExport(t *testing.T) {
 		},
 	}
 
-	p.Commander = internal.Commander{Executor: internal.NewExecutor(expectedCommands)}
+	p.Commander = internal.Commander{Executor: test.NewExecutor(expectedCommands)}
 
 	err := p.Export(&b)
 
@@ -63,7 +64,7 @@ func TestExport_Failure(t *testing.T) {
 
 	b := backup.Backup{Path: "/var/test/my-bucket-name"}
 
-	expectedCommands := []internal.FakeCommand{
+	expectedCommands := []test.FakeCommand{
 		{
 			Command: fmt.Sprintf(
 				"pg_dump -f%s",
@@ -73,7 +74,7 @@ func TestExport_Failure(t *testing.T) {
 		},
 	}
 
-	p.Commander = internal.Commander{Executor: internal.NewExecutor(expectedCommands)}
+	p.Commander = internal.Commander{Executor: test.NewExecutor(expectedCommands)}
 
 	err := p.Export(&b)
 
@@ -92,7 +93,7 @@ func TestImport(t *testing.T) {
 
 	b := backup.Backup{Path: "/var/test/my-bucket-name"}
 
-	expectedCommands := []internal.FakeCommand{
+	expectedCommands := []test.FakeCommand{
 		{
 			Command: fmt.Sprintf(
 				"psql -d%s -p%s -U%s -f%s",
@@ -104,7 +105,7 @@ func TestImport(t *testing.T) {
 		},
 	}
 
-	p.Commander = internal.Commander{Executor: internal.NewExecutor(expectedCommands)}
+	p.Commander = internal.Commander{Executor: test.NewExecutor(expectedCommands)}
 
 	err := p.Import(&b)
 
@@ -119,7 +120,7 @@ func TestImport_Failure(t *testing.T) {
 
 	b := backup.Backup{Path: "/var/test/my-bucket-name"}
 
-	expectedCommands := []internal.FakeCommand{
+	expectedCommands := []test.FakeCommand{
 		{
 			Command: fmt.Sprintf(
 				"psql -f%s",
@@ -129,7 +130,7 @@ func TestImport_Failure(t *testing.T) {
 		},
 	}
 
-	p.Commander = internal.Commander{Executor: internal.NewExecutor(expectedCommands)}
+	p.Commander = internal.Commander{Executor: test.NewExecutor(expectedCommands)}
 
 	err := p.Import(&b)
 
