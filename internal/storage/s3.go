@@ -14,7 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 )
 
-// S3 database backup storage.
+// S3 provider backup storage.
 type S3 struct {
 	Bucket      string
 	EndpointURL string
@@ -54,7 +54,7 @@ func (s *S3) Get(backup backup.Backup) error {
 	return nil
 }
 
-// Save saves database backup to S3.
+// Save saves provider backup to S3.
 func (s *S3) Save(backup backup.Backup) error {
 	file, err := os.Open(backup.Path)
 	if err != nil {

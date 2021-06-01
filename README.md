@@ -14,7 +14,7 @@ go get github.com/omegion/db-backup
 ```
 
 ```shell
-CLI command to create backup for database in local or cloud.
+CLI command to create backup for provider in local or cloud.
 
 Usage:
   db-backup [command]
@@ -44,7 +44,7 @@ db-backup dump s3 \
   --type=postgres \
   --host=example.com \
   --port=1234 \
-  --database=test \
+  --provider=test \
   --username=test \
   --password="12345" \
   --bucket-name=$BUCKET_NAME \

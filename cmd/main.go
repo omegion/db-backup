@@ -23,7 +23,7 @@ func (c *Commander) SetRootCommand() {
 	c.Root = &cobra.Command{
 		Use:          "db-backup",
 		Short:        "Database Backup Tool",
-		Long:         "CLI command to create backup for database in local or cloud.",
+		Long:         "CLI command to create backup for provider in local or cloud.",
 		SilenceUsage: true,
 	}
 }

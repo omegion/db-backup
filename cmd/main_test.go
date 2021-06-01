@@ -21,7 +21,7 @@ func TestCommander_SetRootCommand(t *testing.T) {
 
 	assert.Equal(t, "db-backup", commander.Root.Use)
 	assert.Equal(t, "Database Backup Tool", commander.Root.Short)
-	assert.Equal(t, "CLI command to create backup for database in local or cloud.", commander.Root.Long)
+	assert.Equal(t, "CLI command to create backup for provider in local or cloud.", commander.Root.Long)
 	assert.Equal(t, true, commander.Root.SilenceUsage)
 }
 

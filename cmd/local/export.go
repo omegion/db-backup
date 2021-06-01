@@ -2,13 +2,13 @@ package local
 
 import (
 	"fmt"
+	"github.com/omegion/db-backup/internal"
 	"log"
 	"strings"
 
 	"github.com/omegion/db-backup/internal/backup"
-	db "github.com/omegion/db-backup/internal/database"
+	db "github.com/omegion/db-backup/internal/provider"
 
-	"github.com/omegion/go-command"
 	"github.com/spf13/cobra"
 )
 
@@ -47,8 +47,8 @@ func SetupExportCommand(cmd *cobra.Command) {
 	}
 }
 
-// GetDatabaseByType gets database by its type.
-func GetDatabaseByType(options db.Options) (db.Database, error) {
+// GetDatabaseByType gets provider by its type.
+func GetDatabaseByType(options internal.Options) (internal.Database, error) {
 	if options.Type == "postgres" {
 		return &db.Postgres{
 			Host:     options.Host,
@@ -63,11 +63,11 @@ func GetDatabaseByType(options db.Options) (db.Database, error) {
 	return &db.Postgres{}, db.TypeError{Type: options.Type}
 }
 
-// Export exports given tables from database.
+// Export exports given tables from provider.
 func Export() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "export",
-		Short: "Export database table to local",
+		Short: "Export provider table to local",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			dbType, _ := cmd.Flags().GetString("type")
 			host, _ := cmd.Flags().GetString("host")
@@ -76,10 +76,10 @@ func Export() *cobra.Command {
 			username, _ := cmd.Flags().GetString("username")
 			password, _ := cmd.Flags().GetString("password")
 
-			commander := command.Command{}
+			commander := internal.NewCommander()
 
 			for _, databaseName := range strings.Split(databases, ",") {
-				options := db.Options{
+				options := internal.Options{
 					Type:     dbType,
 					Host:     host,
 					Port:     port,

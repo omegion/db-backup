@@ -2,15 +2,14 @@ package s3
 
 import (
 	"fmt"
+	"github.com/omegion/db-backup/internal"
 	"log"
 	"strings"
 
 	"github.com/omegion/db-backup/cmd/local"
 	"github.com/omegion/db-backup/internal/backup"
-	db "github.com/omegion/db-backup/internal/database"
 	"github.com/omegion/db-backup/internal/storage"
 
-	"github.com/omegion/go-command"
 	"github.com/spf13/cobra"
 )
 
@@ -22,11 +21,11 @@ func setupImportCommand(cmd *cobra.Command) {
 	}
 }
 
-// Import imports given backups to database.
+// Import imports given backups to provider.
 func Import() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "import",
-		Short: "Import database backup from S3 bucket.",
+		Short: "Import provider backup from S3 bucket.",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			dbType, _ := cmd.Flags().GetString("type")
 			path, _ := cmd.Flags().GetString("path")
@@ -38,10 +37,10 @@ func Import() *cobra.Command {
 			bucketName, _ := cmd.Flags().GetString("bucket")
 			endpointURL, _ := cmd.Flags().GetString("endpoint")
 
-			commander := command.Command{}
+			commander := internal.NewCommander()
 
 			for _, databaseName := range strings.Split(databases, ",") {
-				options := db.Options{
+				options := internal.Options{
 					Type:     dbType,
 					Host:     host,
 					Port:     port,

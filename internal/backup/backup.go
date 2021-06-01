@@ -21,7 +21,7 @@ type Options struct {
 	Host string
 }
 
-// Backup for database.
+// Backup for provider.
 type Backup struct {
 	Name      string
 	Path      string
