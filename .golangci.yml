@@ -33,6 +33,7 @@ issues:
         - funlen
         - testpackage
         - ifshort
+        - paralleltest
 
 linters:
   disable-all: false

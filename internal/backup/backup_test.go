@@ -24,8 +24,6 @@ func (s *mockStorageFailure) List(b Backup) ([]Backup, error) {
 }
 
 func TestBackup_Get(t *testing.T) {
-	t.Parallel()
-
 	storage := mockStorage{}
 	backup := New(Options{})
 
@@ -35,8 +33,6 @@ func TestBackup_Get(t *testing.T) {
 }
 
 func TestBackup_Get_Failure(t *testing.T) {
-	t.Parallel()
-
 	storage := mockStorageFailure{}
 	backup := New(Options{})
 
@@ -46,8 +42,6 @@ func TestBackup_Get_Failure(t *testing.T) {
 }
 
 func TestBackup_Save(t *testing.T) {
-	t.Parallel()
-
 	storage := mockStorage{}
 	backup := New(Options{})
 
@@ -57,8 +51,6 @@ func TestBackup_Save(t *testing.T) {
 }
 
 func TestBackup_Save_Failure(t *testing.T) {
-	t.Parallel()
-
 	storage := mockStorageFailure{}
 	backup := New(Options{})
 
@@ -68,8 +60,6 @@ func TestBackup_Save_Failure(t *testing.T) {
 }
 
 func TestBackup_Delete(t *testing.T) {
-	t.Parallel()
-
 	storage := mockStorage{}
 	backup := New(Options{})
 
@@ -79,8 +69,6 @@ func TestBackup_Delete(t *testing.T) {
 }
 
 func TestBackup_Delete_Failure(t *testing.T) {
-	t.Parallel()
-
 	storage := mockStorageFailure{}
 	backup := New(Options{})
 
@@ -90,8 +78,6 @@ func TestBackup_Delete_Failure(t *testing.T) {
 }
 
 func TestBackup_Filename(t *testing.T) {
-	t.Parallel()
-
 	backup := New(Options{})
 
 	fileName := backup.Filename()

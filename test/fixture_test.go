@@ -5,8 +5,6 @@ import (
 )
 
 func TestLoadFixture_found(t *testing.T) {
-	t.Parallel()
-
 	data, err := LoadFixture("data")
 	if err != nil {
 		t.Errorf("TestLoadFixture_found should find the 'data' file")
@@ -19,8 +17,6 @@ func TestLoadFixture_found(t *testing.T) {
 }
 
 func TestLoadFixture_notFound(t *testing.T) {
-	t.Parallel()
-
 	data, err := LoadFixture("nodata")
 	if err == nil {
 		t.Errorf("TestLoadFixture_notFound should not find the 'nodata' file")
@@ -33,8 +29,6 @@ func TestLoadFixture_notFound(t *testing.T) {
 }
 
 func TestMust_noError(t *testing.T) {
-	t.Parallel()
-
 	input := []byte("Yey")
 	expected := "Yey"
 
@@ -45,8 +39,6 @@ func TestMust_noError(t *testing.T) {
 }
 
 func TestMust_hasError(t *testing.T) {
-	t.Parallel()
-
 	defer func() {
 		if r := recover(); r == nil {
 			t.Errorf("TestMust_hasError should have panicked!")
