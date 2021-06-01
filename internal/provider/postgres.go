@@ -4,10 +4,12 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"os"
+
 	"github.com/omegion/db-backup/internal"
 	"github.com/omegion/db-backup/internal/backup"
+
 	log "github.com/sirupsen/logrus"
-	"os"
 )
 
 const (

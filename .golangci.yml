@@ -7,8 +7,6 @@ run:
 linters-settings:
   goimports:
     local-prefixes: github.com/omegion/db-backup
-  golint:
-    min-confidence: 0
   govet:
     check-shadowing: true
   misspell:
@@ -31,7 +29,6 @@ issues:
         - gosec
         - dupl
         - funlen
-        - scopelint
         - testpackage
 
 linters:
@@ -66,14 +63,12 @@ linters:
     - gofmt
     - gofumpt
     - goimports
-    - golint
+    - revive
     - gomnd
     - gomodguard
     - goprintffuncname
     - gosec
-    - interfacer
     - lll
-    - maligned
     - misspell
     - nakedret
     - nestif
@@ -81,7 +76,7 @@ linters:
     - nolintlint
     - prealloc
     - rowserrcheck
-    - scopelint
+    - exportloopref
     - sqlclosecheck
     - stylecheck
     - unconvert
@@ -89,6 +84,3 @@ linters:
     - whitespace
     - wsl
     - tparallel
-    # don't enable:
-    # - go-header
-    # - testpackage

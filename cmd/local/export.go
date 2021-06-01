@@ -2,10 +2,10 @@ package local
 
 import (
 	"fmt"
-	"github.com/omegion/db-backup/internal"
 	"log"
 	"strings"
 
+	"github.com/omegion/db-backup/internal"
 	"github.com/omegion/db-backup/internal/backup"
 	db "github.com/omegion/db-backup/internal/provider"
 

@@ -2,11 +2,11 @@ package s3
 
 import (
 	"fmt"
-	"github.com/omegion/db-backup/internal"
 	"log"
 	"strings"
 
 	"github.com/omegion/db-backup/cmd/local"
+	"github.com/omegion/db-backup/internal"
 	"github.com/omegion/db-backup/internal/backup"
 	"github.com/omegion/db-backup/internal/storage"
 

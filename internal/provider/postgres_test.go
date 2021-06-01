@@ -2,11 +2,13 @@ package provider
 
 import (
 	"fmt"
-	"github.com/omegion/db-backup/internal"
-	"github.com/omegion/db-backup/internal/backup"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
+
+	"github.com/omegion/db-backup/internal"
+	"github.com/omegion/db-backup/internal/backup"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSetCommander(t *testing.T) {

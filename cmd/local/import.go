@@ -2,11 +2,12 @@ package local
 
 import (
 	"fmt"
-	"github.com/omegion/db-backup/internal"
 	"log"
 	"strings"
 
+	"github.com/omegion/db-backup/internal"
 	"github.com/omegion/db-backup/internal/backup"
+
 	"github.com/spf13/cobra"
 )
 
