@@ -3,6 +3,8 @@ ARG FROM_IMAGE=alpine:3.12
 
 FROM --platform=${BUILDPLATFORM} golang:${GO_VERSION} AS builder
 
+ARG TARGETOS
+ARG TARGETARCH
 
 LABEL org.opencontainers.image.source="https://github.com/omegion/do-db-backup"
 
@@ -12,9 +14,9 @@ RUN apk update && \
   rm -rf /var/cache/apk/* && \
   rm -rf /var/tmp/*
 
-COPY ./ /app
-
 WORKDIR /app
+
+COPY ./ /app
 
 RUN make build TARGETOS=$TARGETOS TARGETARCH=$TARGETARCH
 
