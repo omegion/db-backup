@@ -7,6 +7,8 @@ import (
 )
 
 func TestVersionCommand(t *testing.T) {
+	t.Parallel()
+
 	output, err := executeCommand(Version())
 	if err != nil {
 		t.Errorf("Command Error: %v", err)

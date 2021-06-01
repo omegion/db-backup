@@ -2,15 +2,15 @@ package s3
 
 import (
 	"fmt"
-	"log"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 
 	"github.com/omegion/db-backup/cmd/local"
 	"github.com/omegion/db-backup/internal"
 	"github.com/omegion/db-backup/internal/backup"
 	"github.com/omegion/db-backup/internal/storage"
-
-	"github.com/spf13/cobra"
 )
 
 func setupExportCommand(cmd *cobra.Command) {
@@ -77,7 +77,7 @@ func Export() *cobra.Command {
 					return err
 				}
 
-				fmt.Printf("Database %s exported successfully.\n", databaseName)
+				log.Infoln(fmt.Sprintf("Database %s exported successfully.", databaseName))
 			}
 
 			return nil

@@ -2,14 +2,14 @@ package local
 
 import (
 	"fmt"
-	"log"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 
 	"github.com/omegion/db-backup/internal"
 	"github.com/omegion/db-backup/internal/backup"
 	db "github.com/omegion/db-backup/internal/provider"
-
-	"github.com/spf13/cobra"
 )
 
 // SetupExportCommand sets default flags.
@@ -107,7 +107,7 @@ func Export() *cobra.Command {
 					return err
 				}
 
-				fmt.Printf("Database %s exported successfully.\n", databaseName)
+				log.Infoln(fmt.Sprintf("Database %s exported successfully.", databaseName))
 			}
 
 			return nil

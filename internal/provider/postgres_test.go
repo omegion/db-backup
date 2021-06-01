@@ -5,13 +5,15 @@ import (
 	"os"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/omegion/db-backup/internal"
 	"github.com/omegion/db-backup/internal/backup"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestSetCommander(t *testing.T) {
+	t.Parallel()
+
 	commander := internal.Commander{}
 
 	p := Postgres{}
@@ -21,6 +23,8 @@ func TestSetCommander(t *testing.T) {
 }
 
 func TestExport(t *testing.T) {
+	t.Parallel()
+
 	p := Postgres{
 		Name:     "test_db",
 		Host:     "db.example.com",
@@ -53,6 +57,8 @@ func TestExport(t *testing.T) {
 }
 
 func TestExport_Failure(t *testing.T) {
+	t.Parallel()
+
 	p := Postgres{}
 
 	b := backup.Backup{Path: "/var/test/my-bucket-name"}
@@ -75,6 +81,8 @@ func TestExport_Failure(t *testing.T) {
 }
 
 func TestImport(t *testing.T) {
+	t.Parallel()
+
 	p := Postgres{
 		Name:     "test_db",
 		Port:     "1234",
@@ -105,6 +113,8 @@ func TestImport(t *testing.T) {
 }
 
 func TestImport_Failure(t *testing.T) {
+	t.Parallel()
+
 	p := Postgres{}
 
 	b := backup.Backup{Path: "/var/test/my-bucket-name"}

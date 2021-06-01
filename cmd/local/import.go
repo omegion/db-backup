@@ -2,13 +2,13 @@ package local
 
 import (
 	"fmt"
-	"log"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 
 	"github.com/omegion/db-backup/internal"
 	"github.com/omegion/db-backup/internal/backup"
-
-	"github.com/spf13/cobra"
 )
 
 func setupImportCommand(cmd *cobra.Command) {
@@ -65,7 +65,7 @@ func Import() *cobra.Command {
 					return err
 				}
 
-				fmt.Printf("Database %s imported successfully.\n", databaseName)
+				log.Infoln(fmt.Sprintf("Database %s imported successfully.", databaseName))
 			}
 
 			return nil

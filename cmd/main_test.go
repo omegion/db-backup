@@ -9,6 +9,8 @@ import (
 )
 
 func TestCommander_NewCommander(t *testing.T) {
+	t.Parallel()
+
 	commander := NewCommander()
 
 	assert.Equal(t, (*cobra.Command)(nil), commander.Root)
@@ -16,6 +18,8 @@ func TestCommander_NewCommander(t *testing.T) {
 }
 
 func TestCommander_SetRootCommand(t *testing.T) {
+	t.Parallel()
+
 	commander := NewCommander()
 	commander.SetRootCommand()
 
@@ -26,6 +30,8 @@ func TestCommander_SetRootCommand(t *testing.T) {
 }
 
 func TestCommander_Setup(t *testing.T) {
+	t.Parallel()
+
 	commander := NewCommander()
 	commander.Setup()
 

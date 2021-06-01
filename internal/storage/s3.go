@@ -6,12 +6,13 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/omegion/db-backup/internal/backup"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
+	log "github.com/sirupsen/logrus"
+
+	"github.com/omegion/db-backup/internal/backup"
 )
 
 // S3 provider backup storage.
@@ -99,7 +100,7 @@ func (s *S3) Save(backup backup.Backup) error {
 		return err
 	}
 
-	fmt.Printf("Dump is successful for %s\n", backup.Name)
+	log.Infoln(fmt.Sprintf("Dump is successful for %s", backup.Name))
 
 	return nil
 }

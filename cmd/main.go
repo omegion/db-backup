@@ -1,11 +1,11 @@
 package cmd
 
 import (
-	"github.com/omegion/db-backup/cmd/local"
-	"github.com/omegion/db-backup/cmd/s3"
-
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+
+	"github.com/omegion/db-backup/cmd/local"
+	"github.com/omegion/db-backup/cmd/s3"
 )
 
 // Commander is a struct for command system.

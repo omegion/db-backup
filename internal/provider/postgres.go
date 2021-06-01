@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"os"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/omegion/db-backup/internal"
 	"github.com/omegion/db-backup/internal/backup"
-
-	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -52,8 +52,7 @@ func (db Postgres) Export(backup *backup.Backup) error {
 
 	command.SetStderr(&stderr)
 
-	_, err := command.Output()
-	if err != nil {
+	if _, err := command.Output(); err != nil {
 		return ExecutionFailedError{Command: PGDumpCmd, Message: stderr.String()}
 	}
 
@@ -74,8 +73,7 @@ func (db Postgres) Import(backup *backup.Backup) error {
 
 	command.SetStderr(&stderr)
 
-	_, err := command.Output()
-	if err != nil {
+	if _, err := command.Output(); err != nil {
 		return ExecutionFailedError{Command: PGImportCmd, Message: stderr.String()}
 	}
 

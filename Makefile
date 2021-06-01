@@ -21,7 +21,7 @@ lint:
 	go vet ./...
 	go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.40.1
 	@golangci-lint --version
-	golangci-lint run
+	golangci-lint run --fix
 	go get -u golang.org/x/lint/golint
 	golint -set_exit_status ./...
 
@@ -29,7 +29,7 @@ lint:
 test:
 	@echo "Running unit tests"
 	mkdir -p $(REPORT_DIR)
-	go test -covermode=count -coverprofile=$(COVER_PROFILE) -tags test -failfast ./...
+	go test -covermode=count -coverprofile=$(COVER_PROFILE) -tags test -failfast -parallel 4 ./...
 	go tool cover -html=$(COVER_PROFILE) -o $(REPORT_DIR)/coverage.html
 
 .PHONY: cut-tag
