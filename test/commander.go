@@ -5,9 +5,8 @@ import (
 	"errors"
 	"strings"
 
-	testingexec "k8s.io/utils/exec/testing"
-
 	"k8s.io/utils/exec"
+	testingexec "k8s.io/utils/exec/testing"
 )
 
 // FakeCommand is a command wrapper for testing.

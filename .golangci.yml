@@ -32,6 +32,7 @@ issues:
         - dupl
         - funlen
         - testpackage
+        - ifshort
 
 linters:
   disable-all: false
