@@ -2,16 +2,15 @@ package s3
 
 import (
 	"fmt"
-	"log"
 	"strings"
 
-	"github.com/omegion/db-backup/cmd/local"
-	"github.com/omegion/db-backup/pkg/backup"
-	db "github.com/omegion/db-backup/pkg/database"
-	"github.com/omegion/db-backup/pkg/storage"
-
-	"github.com/omegion/go-command"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+
+	"github.com/omegion/db-backup/cmd/local"
+	"github.com/omegion/db-backup/internal"
+	"github.com/omegion/db-backup/internal/backup"
+	"github.com/omegion/db-backup/internal/storage"
 )
 
 func setupExportCommand(cmd *cobra.Command) {
@@ -24,11 +23,11 @@ func setupExportCommand(cmd *cobra.Command) {
 	cmd.Flags().String("endpoint", "", "S3 custom endpoint")
 }
 
-// Export exports given tables from database.
+// Export exports given tables from provider.
 func Export() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "export",
-		Short: "Export database to S3 bucket.",
+		Short: "Export provider to S3 bucket.",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			dbType, _ := cmd.Flags().GetString("type")
 			host, _ := cmd.Flags().GetString("host")
@@ -39,10 +38,10 @@ func Export() *cobra.Command {
 			bucketName, _ := cmd.Flags().GetString("bucket")
 			endpointURL, _ := cmd.Flags().GetString("endpoint")
 
-			commander := command.Command{}
+			commander := internal.NewCommander()
 
 			for _, databaseName := range strings.Split(databases, ",") {
-				options := db.Options{
+				options := internal.Options{
 					Type:     dbType,
 					Host:     host,
 					Port:     port,
@@ -78,7 +77,7 @@ func Export() *cobra.Command {
 					return err
 				}
 
-				fmt.Printf("Database %s exported successfully.\n", databaseName)
+				log.Infoln(fmt.Sprintf("Database %s exported successfully.", databaseName))
 			}
 
 			return nil

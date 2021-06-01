@@ -21,7 +21,7 @@ type Options struct {
 	Host string
 }
 
-// Backup for database.
+// Backup for provider.
 type Backup struct {
 	Name      string
 	Path      string
@@ -53,12 +53,7 @@ func (b *Backup) Delete(storage Storage) error {
 
 // Get backup from given storage.
 func (b *Backup) Get(storage Storage) error {
-	err := storage.Get(*b)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return storage.Get(*b)
 }
 
 // Filename backup filename from path.

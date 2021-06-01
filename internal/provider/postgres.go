@@ -1,13 +1,15 @@
-package database
+package provider
 
 import (
+	"bytes"
+	"context"
 	"fmt"
 	"os"
-	"os/exec"
 
-	"github.com/omegion/db-backup/pkg/backup"
+	log "github.com/sirupsen/logrus"
 
-	"github.com/omegion/go-command"
+	"github.com/omegion/db-backup/internal"
+	"github.com/omegion/db-backup/internal/backup"
 )
 
 const (
@@ -17,7 +19,7 @@ const (
 	PGImportCmd = "psql"
 )
 
-// Postgres database.
+// Postgres provider.
 type Postgres struct {
 	Host     string
 	Port     string
@@ -27,11 +29,11 @@ type Postgres struct {
 	// Extra pg_dump options
 	// e.g []string{"--inserts"}
 	Options   []string
-	Commander command.Interface
+	Commander internal.Commander
 }
 
 // SetCommander sets commander for Postgres.
-func (db *Postgres) SetCommander(commander command.Interface) {
+func (db *Postgres) SetCommander(commander internal.Commander) {
 	db.Commander = commander
 }
 
@@ -39,35 +41,40 @@ func (db *Postgres) SetCommander(commander command.Interface) {
 func (db Postgres) Export(backup *backup.Backup) error {
 	options := append(db.dumpOptions(), fmt.Sprintf(`-f%v`, backup.Filename()))
 
-	_, err := db.Commander.Output(PGDumpCmd, options...)
-	if err != nil {
-		if exitError, ok := err.(*exec.ExitError); ok {
-			return PostgresError{
-				Origin:  err,
-				Message: string(exitError.Stderr),
-			}
-		}
+	log.Debugln(fmt.Sprintf("Exporting database table with %s", PGDumpCmd))
+	command := db.Commander.Executor.CommandContext(
+		context.Background(),
+		PGDumpCmd,
+		options...,
+	)
 
-		return err
+	var stderr bytes.Buffer
+
+	command.SetStderr(&stderr)
+
+	if _, err := command.Output(); err != nil {
+		return ExecutionFailedError{Command: PGDumpCmd, Message: stderr.String()}
 	}
 
 	return nil
 }
 
-// Import imports given file to Postgres database.
+// Import imports given file to Postgres provider.
 func (db Postgres) Import(backup *backup.Backup) error {
 	options := append(db.dumpOptions(), fmt.Sprintf(`-f%v`, backup.Filename()))
 
-	_, err := db.Commander.Output(PGImportCmd, options...)
-	if err != nil {
-		if exitError, ok := err.(*exec.ExitError); ok {
-			return PostgresError{
-				Origin:  err,
-				Message: string(exitError.Stderr),
-			}
-		}
+	command := db.Commander.Executor.CommandContext(
+		context.Background(),
+		PGImportCmd,
+		options...,
+	)
 
-		return err
+	var stderr bytes.Buffer
+
+	command.SetStderr(&stderr)
+
+	if _, err := command.Output(); err != nil {
+		return ExecutionFailedError{Command: PGImportCmd, Message: stderr.String()}
 	}
 
 	return nil

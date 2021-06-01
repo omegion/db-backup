@@ -1,14 +1,12 @@
-package database
+package internal
 
 import (
-	"github.com/omegion/db-backup/pkg/backup"
-
-	"github.com/omegion/go-command"
+	"github.com/omegion/db-backup/internal/backup"
 )
 
 // Database interface for different databases.
 type Database interface {
-	SetCommander(command.Interface)
+	SetCommander(commander Commander)
 	Export(*backup.Backup) error
 	Import(*backup.Backup) error
 }
