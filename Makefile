@@ -29,7 +29,7 @@ lint:
 test:
 	@echo "Running unit tests"
 	mkdir -p $(REPORT_DIR)
-	go test -covermode=count -coverprofile=$(COVER_PROFILE) -tags test -failfast -parallel 4 ./...
+	go test -covermode=count -coverprofile=$(COVER_PROFILE) -tags test -failfast ./...
 	go tool cover -html=$(COVER_PROFILE) -o $(REPORT_DIR)/coverage.html
 
 .PHONY: cut-tag
