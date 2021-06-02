@@ -32,6 +32,8 @@ issues:
         - dupl
         - funlen
         - testpackage
+        - ifshort
+        - paralleltest
 
 linters:
   disable-all: false
