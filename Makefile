@@ -2,16 +2,17 @@ export PATH := $(abspath ./vendor/bin):$(PATH)
 
 BASE_PACKAGE_NAME	= github.com/omegion/db-backup
 GIT_VERSION 		= $(shell git describe --tags --always 2> /dev/null || echo 0.0.0)
-LDFLAGS            	= -ldflags "-X $(BASE_PACKAGE_NAME)/internal/info.Version=$(GIT_VERSION)"
+LDFLAGS             = -ldflags "-buildid=$(GIT_VERSION)"
 BUFFER            	:= $(shell mktemp)
 REPORT_DIR        	= dist/report
 COVER_PROFILE      	= $(REPORT_DIR)/coverage.out
-TARGETOS		   	= "darwin"
-TARGETARCH		   	= "amd64"
+TARGETOS		    = darwin
+TARGETARCH		    = amd64
+BINARY_NAME         = dist/db-backup
 
 .PHONY: build
 build:
-	CGO_ENABLED=0 GOOS=$(TARGETOS) GOARCH=$(TARGETARCH) go build $(LDFLAGS) -a -installsuffix cgo -o dist/db-backup main.go
+	CGO_ENABLED=0 GOOS="$(TARGETOS)" GOARCH="$(TARGETARCH)" go build $(LDFLAGS) -a -installsuffix cgo -o $(BINARY_NAME) main.go
 
 .PHONY: lint
 lint:
@@ -19,11 +20,15 @@ lint:
 	gofmt -l . | tee $(BUFFER)
 	@! test -s $(BUFFER)
 	go vet ./...
-	go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.40.1
+
+	# golangci-lint
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.45.2
 	@golangci-lint --version
-	golangci-lint run --fix
-	go get -u golang.org/x/lint/golint
-	golint -set_exit_status ./...
+	golangci-lint run
+
+	# Statuscheck
+	go install honnef.co/go/tools/cmd/staticcheck@2022.1
+	staticcheck ./...
 
 .PHONY: test
 test:
@@ -37,15 +42,3 @@ cut-tag:
 	@echo "Cutting $(version)"
 	git tag $(version)
 	git push origin $(version)
-
-.PHONY: release
-release: build
-	@echo "Releasing $(GIT_VERSION)"
-	docker build -t ddclient .
-	docker tag db-backup:latest omegion/db-backup:$(GIT_VERSION)
-	docker push omegion/db-backup:$(GIT_VERSION)
-
-.PHONY: docker-image
-docker-image:
-	@echo "Building Docker Image"
-	docker buildx build -t db-backup --platform linux/amd64,linux/arm64 . --output=type=docker

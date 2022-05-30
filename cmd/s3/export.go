@@ -62,14 +62,14 @@ func Export() *cobra.Command {
 					Host: host,
 				}
 
-				b := backup.New(backupOptions)
+				bck := backup.New(backupOptions)
 
-				err = database.Export(&b)
+				err = database.Export(&bck)
 				if err != nil {
 					return err
 				}
 
-				err = b.Save(&storage.S3{
+				err = bck.Save(&storage.S3{
 					Bucket:      bucketName,
 					EndpointURL: endpointURL,
 				})
