@@ -21,6 +21,7 @@ func Version() *cobra.Command {
 			}
 
 			log.Infoln(version)
+
 			return nil
 		},
 	}

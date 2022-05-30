@@ -56,13 +56,13 @@ func Import() *cobra.Command {
 
 				database.SetCommander(commander)
 
-				b := backup.Backup{
+				bck := backup.Backup{
 					Name: databaseName,
 					Path: path,
 					Host: host,
 				}
 
-				err = b.Get(&storage.S3{
+				err = bck.Get(&storage.S3{
 					Bucket:      bucketName,
 					EndpointURL: endpointURL,
 				})
@@ -70,7 +70,7 @@ func Import() *cobra.Command {
 					return err
 				}
 
-				err = database.Import(&b)
+				err = database.Import(&bck)
 				if err != nil {
 					return err
 				}

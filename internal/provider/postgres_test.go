@@ -22,7 +22,7 @@ func TestSetCommander(t *testing.T) {
 }
 
 func TestExport(t *testing.T) {
-	p := Postgres{
+	post := Postgres{
 		Name:     "test_db",
 		Host:     "db.example.com",
 		Port:     "1234",
@@ -30,33 +30,33 @@ func TestExport(t *testing.T) {
 		Password: "123456789",
 	}
 
-	b := backup.Backup{Path: "/var/test/my-bucket-name"}
+	bck := backup.Backup{Path: "/var/test/my-bucket-name"}
 
 	expectedCommands := []test.FakeCommand{
 		{
 			Command: fmt.Sprintf(
 				"pg_dump -d%s -h%s -p%s -U%s -f%s",
-				p.Name,
-				p.Host,
-				p.Port,
-				p.Username,
+				post.Name,
+				post.Host,
+				post.Port,
+				post.Username,
 				"my-bucket-name",
 			),
 		},
 	}
 
-	p.Commander = internal.Commander{Executor: test.NewExecutor(expectedCommands)}
+	post.Commander = internal.Commander{Executor: test.NewExecutor(expectedCommands)}
 
-	err := p.Export(&b)
+	err := post.Export(&bck)
 
 	assert.NoError(t, err)
-	assert.Equal(t, p.Password, os.Getenv("PGPASSWORD"))
+	assert.Equal(t, post.Password, os.Getenv("PGPASSWORD"))
 }
 
 func TestExport_Failure(t *testing.T) {
-	p := Postgres{}
+	post := Postgres{}
 
-	b := backup.Backup{Path: "/var/test/my-bucket-name"}
+	bck := backup.Backup{Path: "/var/test/my-bucket-name"}
 
 	expectedCommands := []test.FakeCommand{
 		{
@@ -68,47 +68,47 @@ func TestExport_Failure(t *testing.T) {
 		},
 	}
 
-	p.Commander = internal.Commander{Executor: test.NewExecutor(expectedCommands)}
+	post.Commander = internal.Commander{Executor: test.NewExecutor(expectedCommands)}
 
-	err := p.Export(&b)
+	err := post.Export(&bck)
 
 	assert.EqualError(t, err, "'pg_dump': Execution failed: ")
 }
 
 func TestImport(t *testing.T) {
-	p := Postgres{
+	post := Postgres{
 		Name:     "test_db",
 		Port:     "1234",
 		Username: "test_user",
 		Password: "123456789",
 	}
 
-	b := backup.Backup{Path: "/var/test/my-bucket-name"}
+	bck := backup.Backup{Path: "/var/test/my-bucket-name"}
 
 	expectedCommands := []test.FakeCommand{
 		{
 			Command: fmt.Sprintf(
 				"psql -d%s -p%s -U%s -f%s",
-				p.Name,
-				p.Port,
-				p.Username,
+				post.Name,
+				post.Port,
+				post.Username,
 				"my-bucket-name",
 			),
 		},
 	}
 
-	p.Commander = internal.Commander{Executor: test.NewExecutor(expectedCommands)}
+	post.Commander = internal.Commander{Executor: test.NewExecutor(expectedCommands)}
 
-	err := p.Import(&b)
+	err := post.Import(&bck)
 
 	assert.NoError(t, err)
-	assert.Equal(t, p.Password, os.Getenv("PGPASSWORD"))
+	assert.Equal(t, post.Password, os.Getenv("PGPASSWORD"))
 }
 
 func TestImport_Failure(t *testing.T) {
-	p := Postgres{}
+	post := Postgres{}
 
-	b := backup.Backup{Path: "/var/test/my-bucket-name"}
+	bck := backup.Backup{Path: "/var/test/my-bucket-name"}
 
 	expectedCommands := []test.FakeCommand{
 		{
@@ -120,9 +120,9 @@ func TestImport_Failure(t *testing.T) {
 		},
 	}
 
-	p.Commander = internal.Commander{Executor: test.NewExecutor(expectedCommands)}
+	post.Commander = internal.Commander{Executor: test.NewExecutor(expectedCommands)}
 
-	err := p.Import(&b)
+	err := post.Import(&bck)
 
 	assert.EqualError(t, err, "'psql': Execution failed: ")
 }

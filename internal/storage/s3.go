@@ -35,7 +35,7 @@ func (s *S3) Get(backup backup.Backup) error {
 
 	downloader := s3manager.NewDownloader(sess)
 
-	file, err := os.Create(filepath.Join(backup.Filename()))
+	file, err := os.Create(backup.Filename())
 	if err != nil {
 		return fmt.Errorf("failed to get backup file: %w", err)
 	}
@@ -109,7 +109,7 @@ func (s *S3) Save(backup backup.Backup) error {
 func (s *S3) Delete(backup backup.Backup) error { return nil }
 
 // List lists backups from S3.
-func (s *S3) List(b backup.Backup) ([]backup.Backup, error) {
+func (s *S3) List(bck backup.Backup) ([]backup.Backup, error) {
 	config := aws.Config{}
 
 	if s.EndpointURL != "" {
@@ -125,7 +125,7 @@ func (s *S3) List(b backup.Backup) ([]backup.Backup, error) {
 	res, err := svc.ListObjectsV2(&s3.ListObjectsV2Input{
 		Bucket:    aws.String(s.Bucket),
 		Delimiter: nil,
-		Prefix:    aws.String(fmt.Sprintf("%s/%s", b.Host, b.Name)),
+		Prefix:    aws.String(fmt.Sprintf("%s/%s", bck.Host, bck.Name)),
 	})
 	if err != nil {
 		return []backup.Backup{}, err
@@ -136,9 +136,9 @@ func (s *S3) List(b backup.Backup) ([]backup.Backup, error) {
 
 	for _, object := range res.Contents {
 		backups = append(backups, backup.Backup{
-			Name: b.Name,
+			Name: bck.Name,
 			Path: *object.Key,
-			Host: b.Host,
+			Host: bck.Host,
 		})
 	}
 
