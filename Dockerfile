@@ -14,7 +14,7 @@ WORKDIR /app
 COPY ./ /app
 
 RUN apk update && \
-  apk add ca-certificates gettext git make curl unzip && \
+  apk add ca-certificates gettext make jq curl openssl git postgresql && \
   rm -rf /tmp/* && \
   rm -rf /var/cache/apk/* && \
   rm -rf /var/tmp/*
