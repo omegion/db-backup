@@ -22,7 +22,7 @@ lint:
 	go vet ./...
 
 	# golangci-lint
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.45.2
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.54.2
 	@golangci-lint --version
 	golangci-lint run
 

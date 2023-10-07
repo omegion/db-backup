@@ -1,6 +1,6 @@
 # Database Backup Tool
 
-[![GithubBuild](https://img.shields.io/github/workflow/status/omegion/db-backup/Code%20Check)](http://pkg.go.dev/github.com/omegion/db-backup)
+[![GithubBuild](https://img.shields.io/github/workflow/status/omegion/db-backup/Tests)](http://pkg.go.dev/github.com/omegion/db-backup)
 [![Coverage Status](https://coveralls.io/repos/github/omegion/db-backup/badge.svg?branch=master)](https://coveralls.io/github/omegion/db-backup?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/omegion/db-backup)](https://goreportcard.com/report/github.com/omegion/db-backup)
 [![GoDoc](https://img.shields.io/badge/pkg.go.dev-doc-blue)](http://pkg.go.dev/github.com/omegion/db-backup)
