@@ -26,10 +26,6 @@ lint:
 	@golangci-lint --version
 	golangci-lint run
 
-	# Statuscheck
-	go install honnef.co/go/tools/cmd/staticcheck@2022.1
-	staticcheck ./...
-
 .PHONY: test
 test:
 	@echo "Running unit tests"

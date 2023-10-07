@@ -106,7 +106,7 @@ func (s *S3) Save(backup backup.Backup) error {
 }
 
 // Delete removes backup from S3.
-func (s *S3) Delete(backup backup.Backup) error { return nil }
+func (s *S3) Delete(_ backup.Backup) error { return nil }
 
 // List lists backups from S3.
 func (s *S3) List(bck backup.Backup) ([]backup.Backup, error) {

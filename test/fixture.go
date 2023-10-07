@@ -2,13 +2,12 @@ package test
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 )
 
 // LoadFixture loads the content of a fixture file.
 func LoadFixture(name string) ([]byte, error) {
-	content, err := ioutil.ReadFile(fmt.Sprintf("fixtures/%s", name))
+	content, err := os.ReadFile(fmt.Sprintf("fixtures/%s", name))
 	if err != nil {
 		path, _ := os.Getwd()
 
