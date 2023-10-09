@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go v1.45.24
 	github.com/go-asset/build v0.0.1
 	github.com/omegion/cobra-commander v0.11.0
-	github.com/sirupsen/logrus v1.8.1
+	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.4.0
 	github.com/stretchr/testify v1.7.1
 	k8s.io/utils v0.0.0-20220210201930-3a6ce19ff2f9
