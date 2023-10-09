@@ -8,7 +8,7 @@ require (
 	github.com/omegion/cobra-commander v0.11.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.7.0
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.8.4
 	k8s.io/utils v0.0.0-20220210201930-3a6ce19ff2f9
 )
 
