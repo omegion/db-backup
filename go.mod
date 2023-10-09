@@ -7,7 +7,7 @@ require (
 	github.com/go-asset/build v0.0.1
 	github.com/omegion/cobra-commander v0.11.0
 	github.com/sirupsen/logrus v1.9.3
-	github.com/spf13/cobra v1.4.0
+	github.com/spf13/cobra v1.7.0
 	github.com/stretchr/testify v1.7.1
 	k8s.io/utils v0.0.0-20220210201930-3a6ce19ff2f9
 )
@@ -29,7 +29,7 @@ require (
 	github.com/googleapis/gax-go/v2 v2.1.1 // indirect
 	github.com/googleapis/google-cloud-go-testing v0.0.0-20210719221736-1c9a4c676720 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
