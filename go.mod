@@ -3,7 +3,7 @@ module github.com/omegion/db-backup
 go 1.21
 
 require (
-	github.com/aws/aws-sdk-go v1.47.11
+	github.com/aws/aws-sdk-go v1.47.12
 	github.com/go-asset/build v0.0.1
 	github.com/omegion/cobra-commander v0.11.0
 	github.com/sirupsen/logrus v1.9.3
