@@ -1,4 +1,4 @@
-ARG GO_VERSION=1.21-alpine3.18
+ARG GO_VERSION=1.22-alpine3.18
 ARG FROM_IMAGE=postgres:alpine3.18
 
 FROM --platform=${BUILDPLATFORM} golang:${GO_VERSION} AS builder
