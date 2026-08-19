@@ -1,6 +1,6 @@
 module github.com/omegion/db-backup
 
-go 1.23
+go 1.25
 
 require (
 	github.com/aws/aws-sdk-go v1.50.6
@@ -9,7 +9,7 @@ require (
 	github.com/sirupsen/logrus v1.10.1
 	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.12.1
-	k8s.io/utils v0.0.0-20240502163921-fe8a2dddb1d0
+	k8s.io/utils v0.0.0-20260707023825-cf1189d6abe3
 )
 
 require (
